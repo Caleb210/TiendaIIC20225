@@ -12,7 +12,7 @@ flush privileges;
 
 use techshop;
 
-/* la tabla de categoria contiene categorias de productos*/
+/* la tabla de categoria contiene categorias de categorias*/
 create table categoria (
   id_categoria INT NOT NULL AUTO_INCREMENT,
   descripcion VARCHAR(30) NOT NULL,
@@ -22,8 +22,8 @@ create table categoria (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-create table producto (
-  id_producto INT NOT NULL AUTO_INCREMENT,
+create table categoria (
+  id_categoria INT NOT NULL AUTO_INCREMENT,
   id_categoria INT NOT NULL,
   descripcion VARCHAR(30) NOT NULL,  
   detalle VARCHAR(1600) NOT NULL, 
@@ -31,8 +31,8 @@ create table producto (
   existencias int,  
   ruta_imagen varchar(1024),
   activo bool,
-  PRIMARY KEY (id_producto),
-  foreign key fk_producto_caregoria (id_categoria) references categoria(id_categoria)  
+  PRIMARY KEY (id_categoria),
+  foreign key fk_categoria_caregoria (id_categoria) references categoria(id_categoria)  
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
@@ -67,12 +67,12 @@ DEFAULT CHARACTER SET = utf8mb4;
 create table venta (
   id_venta INT NOT NULL AUTO_INCREMENT,
   id_factura INT NOT NULL,
-  id_producto INT NOT NULL,
+  id_categoria INT NOT NULL,
   precio double, 
   cantidad int,
   PRIMARY KEY (id_venta),
   foreign key fk_ventas_factura (id_factura) references factura(id_factura),
-  foreign key fk_ventas_producto (id_producto) references producto(id_producto) 
+  foreign key fk_ventas_categoria (id_categoria) references categoria(id_categoria) 
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
@@ -83,15 +83,15 @@ INSERT INTO usuario (id_usuario, username,password,nombre, apellidos, correo, te
 (2,'rebeca','$2a$10$GkEj.ZzmQa/aEfDmtLIh3udIH5fMphx/35d0EYeqZL5uzgCJ0lQRi','Rebeca',  'Contreras Mora', 'acontreras@gmail.com', '5456-8789','https://upload.wikimedia.org/wikipedia/commons/0/06/Photo_of_Rebeca_Arthur.jpg',true),
 (3,'pedro','$2a$10$koGR7eS22Pv5KdaVJKDcge04ZB53iMiw76.UjHPY.XyVYlYqXnPbO','Pedro', 'Mena Loria',     'lmena@gmail.com',      '7898-8936','https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Eduardo_de_Pedro_2019.jpg/480px-Eduardo_de_Pedro_2019.jpg?20200109230854',true);
 
-/*Se insertan 3 categorias de productos como ejemplo */
+/*Se insertan 3 categorias de categorias como ejemplo */
 INSERT INTO categoria (id_categoria,descripcion,ruta_imagen,activo) VALUES 
 ('1','Monitores', 'https://d2ulnfq8we0v3.cloudfront.net/cdn/695858/media/catalog/category/MONITORES.jpg',   true), 
 ('2','Teclados',  'https://cnnespanol.cnn.com/wp-content/uploads/2022/04/teclado-mecanico.jpg',   true),
 ('3','Tarjeta Madre','https://static-geektopia.com/storage/thumbs/784x311/788/7884251b/98c0f4a5.webp',true),
 ('4','Celulares','https://www.monumental.co.cr/wp-content/uploads/2022/03/X4J2Z6XQUZDO7O6QTDF4DIJ3VE.jpeg',    false);
 
-/*Se insertan 4 productos por categoria */
-INSERT INTO producto (id_producto,id_categoria,descripcion,detalle,precio,existencias,ruta_imagen,activo) VALUES
+/*Se insertan 4 categorias por categoria */
+INSERT INTO categoria (id_categoria,id_categoria,descripcion,detalle,precio,existencias,ruta_imagen,activo) VALUES
 (1,1,'Monitor AOC 19','Lorem ipsum dolor sit amet consectetur adipiscing elit iaculis, ullamcorper in fringilla eu cras tempor mi. Luctus blandit sapien mauris vestibulum consequat mattis taciti aliquam ullamcorper, sagittis suscipit etiam urna convallis interdum tempor bibendum, ultricies habitant viverra natoque dictum posuere senectus volutpat. Cum ad vehicula condimentum nunc lacus nec tellus eleifend, a platea curae nullam sollicitudin nibh class cursus taciti, posuere purus inceptos facilisis cubilia suspendisse ut.',23000,5,'https://c.pxhere.com/images/ec/fd/d67b367ed6467eb826842ac81d3b-1453591.jpg!d',true),
 (2,1,'Monitor MAC','Quisque in ridiculus scelerisque platea accumsan libero sem vel, mi cras metus cubilia tempor conubia fermentum volutpat gravida, maecenas semper sodales potenti turpis enim dapibus. Volutpat accumsan vivamus dignissim blandit vel eget posuere donec id, tempus sagittis aliquam erat luctus ornare aptent cubilia aliquet proin, ultrices ante pretium gravida sed vitae vestibulum aenean. Eleifend nascetur conubia ornare purus a eget at metus est risus natoque, elementum dis vulputate sociosqu integer ut ad nisl dui molestie.',27000,2,'https://c.pxhere.com/photos/17/77/Art_Calendar_Cc0_Creative_Design_High_Resolution_Mac_Stock-1622403.jpg!d',true),
 (3,1,'Monitor Flex 21','Natoque lacinia accumsan hendrerit pretium sociis imperdiet a, nullam ornare erat suspendisse praesent porta, euismod in augue tempus aliquet habitasse. Non accumsan nostra cras vestibulum augue facilisi auctor scelerisque suscipit, iaculis maecenas varius sollicitudin lacus netus et ultricies tincidunt, tortor curabitur tempor diam aliquet dis platea integer. Potenti aliquet erat neque vitae et sociis pretium, viverra euismod vivamus scelerisque metus est feugiat curae, parturient auctor aliquam pharetra nam congue.',24000,5,'https://www.trustedreviews.com/wp-content/uploads/sites/54/2022/09/LG-OLED-Flex-7-scaled.jpg',true),
@@ -118,7 +118,7 @@ INSERT INTO factura (id_factura,id_usuario,fecha,total,estado) VALUES
 (5,2,'2022-01-17',414800,1),
 (6,3,'2022-01-21',420000,1);
 
-INSERT INTO venta (id_venta,id_factura,id_producto,precio,cantidad) values
+INSERT INTO venta (id_venta,id_factura,id_categoria,precio,cantidad) values
 (1,1,5,45000,3),
 (2,1,9,15780,2),
 (3,1,10,15000,3),
@@ -162,10 +162,10 @@ CREATE TABLE request_matcher (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-INSERT INTO request_matcher (pattern, role_name) VALUES ('/producto/nuevo', 'ADMIN'),
-('/producto/guardar', 'ADMIN'),
-('/producto/modificar/** ', 'ADMIN'),
-('/producto/eliminar/**', 'ADMIN'),
+INSERT INTO request_matcher (pattern, role_name) VALUES ('/categoria/nuevo', 'ADMIN'),
+('/categoria/guardar', 'ADMIN'),
+('/categoria/modificar/** ', 'ADMIN'),
+('/categoria/eliminar/**', 'ADMIN'),
 ('/categoria/nuevo', 'ADMIN'),
 ('/categoria/guardar', 'ADMIN'),
 ('/categoria/modificar/** ', 'ADMIN'),
@@ -175,7 +175,7 @@ INSERT INTO request_matcher (pattern, role_name) VALUES ('/producto/nuevo', 'ADM
 ('/usuario/modificar/** ', 'ADMIN'),
 ('/usuario/eliminar/**', 'ADMIN'),
 ('/reportes/**', 'ADMIN'),
-('/producto/listado', 'VENDEDOR'),
+('/categoria/listado', 'VENDEDOR'),
 ('/categoria/listado', 'VENDEDOR'),
 ('/usuario/listado', 'VENDEDOR'),
 ('/facturar/carrito', 'USER');
