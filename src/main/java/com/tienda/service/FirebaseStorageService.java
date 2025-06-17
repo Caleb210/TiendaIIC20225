@@ -17,5 +17,4 @@
 //    //final String rutaJsonFile = "firebase";
 //    
 //    //El nombre del archivo Json
-//    //final String archivoJsonFile = "tecshop-iic2025-firebase-adminsdk-fbsvc-31d5f1dbdd"+".json";
 //}
